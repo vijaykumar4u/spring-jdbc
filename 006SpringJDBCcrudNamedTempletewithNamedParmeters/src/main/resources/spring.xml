@@ -1,0 +1,38 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+                            http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd">
+
+	<!-- <bean class= "org.springframework.beans.factory.config.PropertyPlaceholderConfigurer"> 
+		<property name="location" value="db.properties" > </property> </bean> -->
+	<context:property-placeholder
+		location="db.properties" />
+
+	<bean id="driverManagerDataSource"
+		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="url" value="${url}"></property>
+		<property name="driverClassName" value="${driver}"></property>
+		<property name="username" value="${uname}"></property>
+		<property name="password" value="${password}"></property>
+	</bean>
+	<!-- named parameter jdbctemplete follow constructor injection
+	thats why need to configure datasource with constroctor injection
+	 -->
+
+	<bean id="namedparamJdbcTemplete"
+		class="org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate">
+
+<constructor-arg ref="driverManagerDataSource" />
+	</bean>
+	<bean id="dao" class="com.vidvaan.dao.CarsDaoImpl">
+	<property name="namedParameterJdbcTemplate" ref="namedparamJdbcTemplete"></property>
+	
+	</bean>
+
+
+
+
+
+
+</beans>
